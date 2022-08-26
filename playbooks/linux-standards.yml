@@ -1,5 +1,0 @@
-- name: Apply standard configuration to all linux hosts
-  hosts: '{{target|default("all")}}'
-  roles:
-    - users
-    - services
