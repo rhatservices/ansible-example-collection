@@ -1,6 +1,6 @@
 - name: Apply standard configuration to all linux hosts
   hosts: '{{target|default("all")}}'
   tasks:
-    - name: Configure SOE on linux hosts
+    - name: Apply SOE configuration to linux hosts
       debug:
-        msg: "This apply our SOE to all linux hosts"
+        msg: "This applies our SOE configuration to all linux hosts"
