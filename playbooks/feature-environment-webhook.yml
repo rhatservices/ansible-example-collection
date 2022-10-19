@@ -56,6 +56,7 @@
             job_slice_count: "1"
             state: "present"
             timeout: "0"
+            validate_certs: false
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
 
@@ -75,6 +76,7 @@
             project: "Pipeline - SOE - project for feature branch {{ git_branch_name }}"
             playbook: "playbooks/linux-soe.yml"
             state: absent
+            validate_certs: false
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
 
@@ -87,8 +89,8 @@
             scm_type: git
             scm_url: "{{ tower_webhook_payload.repository.clone_url }}"
             scm_branch: "{{ git_branch_name }}"
-            validate_certs: false
             state: absent
+            validate_certs: false
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
 
