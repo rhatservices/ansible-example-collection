@@ -31,7 +31,7 @@
             description: "Test environment for feature branch {{ git_branch_name }}"
             organization: "Pipeline"
             scm_type: git
-            scm_url: "{{ tower_webhook_payload.repository.repository.clone_url }}"
+            scm_url: "{{ tower_webhook_payload.repository.clone_url }}"
             scm_branch: "{{ git_branch_name }}"
             scm_credential: "linux_gitlab_tower-linux-org"
             validate_certs: false
