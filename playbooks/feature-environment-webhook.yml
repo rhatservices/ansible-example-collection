@@ -73,7 +73,7 @@
             description: "Job template for feature branch {{ git_branch_name }}"
             job_type: "run"
             project: "Pipeline - SOE - project for feature branch {{ git_branch_name }}"
-            playbook: "linux-soe.yml"
+            playbook: "playbooks/linux-soe.yml"
             state: absent
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
@@ -85,7 +85,7 @@
             description: "Test environment for feature branch {{ git_branch_name }}"
             organization: "Pipeline"
             scm_type: git
-            scm_url: "{{ tower_webhook_payload.repository.git_http_url }}"
+            scm_url: "{{ tower_webhook_payload.repository.clone_url }}"
             scm_branch: "{{ git_branch_name }}"
             validate_certs: false
             state: absent
