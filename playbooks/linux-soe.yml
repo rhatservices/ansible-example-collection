@@ -2,5 +2,5 @@
   hosts: '{{target|default("all")}}'
   tasks:
     - name: Apply SOE configuration to linux hosts
-      debug:
+      ansible.builtin.debug:
         msg: "This applies our SOE configuration to all linux hosts"

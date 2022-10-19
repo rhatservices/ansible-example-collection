@@ -1,3 +1,4 @@
 ---
-- user:
+- name: Create a required user
+  ansible.builtin.user:
     name: ferl

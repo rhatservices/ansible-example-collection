@@ -23,7 +23,8 @@
           - "Branch create event: {{ git_branch_create_event }}"
           - "Branch delete event: {{ git_branch_delete_event }}"
 
-    - block:
+    - name: Create a new feature branch environment
+      block:
         - name: Create a project for the feature branch {{ git_branch_name }}
           ansible.controller.project:
             name: "Pipeline - SOE - project for feature branch {{ git_branch_name }}"
@@ -39,7 +40,6 @@
             controller_oauthtoken: "{{ controller_oauthtoken }}"
 
         - name: Create job template for feature branch {{ git_branch_name }}
-          #no_log: true
           ansible.controller.job_template:
             organization: "Pipeline"
             # yamllint disable-line rule:line-length
@@ -62,7 +62,8 @@
       when:
         - git_branch_create_event | bool
 
-    - block:
+    - name: Delete feature branch environment
+      block:
         - name: Delete job template for feature branch {{ git_branch_name }}
           # no_log: true
           ansible.controller.job_template:
@@ -75,7 +76,7 @@
             playbook: "linux-soe.yml"
             state: absent
             controller_host: "{{ controller_url }}"
-            controller_oauthtoken: "{{ controller_oauthtoken }"
+            controller_oauthtoken: "{{ controller_oauthtoken }}"
 
         - name: Delete project for the feature branch {{ git_branch_name }}
           ansible.controller.project:
@@ -89,7 +90,7 @@
             validate_certs: false
             state: absent
             controller_host: "{{ controller_url }}"
-            controller_oauthtoken: "{{ controller_oauthtoken }}
+            controller_oauthtoken: "{{ controller_oauthtoken }}"
 
       when:
         - git_branch_delete_event | bool
