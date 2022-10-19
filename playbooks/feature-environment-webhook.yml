@@ -27,7 +27,7 @@
       block:
         - name: Create a project for the feature branch {{ git_branch_name }}
           ansible.controller.project:
-            name: "Pipeline - SOE - project for feature branch {{ git_branch_name }}"
+            name: "Pipeline - SOE - Project for feature branch {{ git_branch_name }}"
             # yamllint disable-line rule:line-length
             description: "Test environment for feature branch {{ git_branch_name }}"
             organization: "Pipeline"
@@ -43,7 +43,7 @@
           ansible.controller.job_template:
             organization: "Pipeline"
             # yamllint disable-line rule:line-length
-            name: "Pipeline - SOE - job template for feature branch {{ git_branch_name }}"
+            name: "Pipeline - SOE - Job template for feature branch {{ git_branch_name }}"
             description: "Job template for feature branch {{ git_branch_name }}"
             inventory: "Demo Inventory"
             job_type: "run"
@@ -70,10 +70,10 @@
           ansible.controller.job_template:
             organization: "Pipeline"
             # yamllint disable-line rule:line-length
-            name: "Pipeline - SOE - job template for feature branch {{ git_branch_name }}"
+            name: "Pipeline - SOE - Job template for feature branch {{ git_branch_name }}"
             description: "Job template for feature branch {{ git_branch_name }}"
             job_type: "run"
-            project: "Pipeline - SOE - project for feature branch {{ git_branch_name }}"
+            project: "Pipeline - SOE - Project for feature branch {{ git_branch_name }}"
             playbook: "playbooks/linux-soe.yml"
             state: absent
             validate_certs: false
@@ -82,7 +82,7 @@
 
         - name: Delete project for the feature branch {{ git_branch_name }}
           ansible.controller.project:
-            name: "Pipeline - SOE - project for feature branch {{ git_branch_name }}"
+            name: "Pipeline - SOE - Project for feature branch {{ git_branch_name }}"
             # yamllint disable-line rule:line-length
             description: "Test environment for feature branch {{ git_branch_name }}"
             organization: "Pipeline"
