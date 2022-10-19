@@ -34,7 +34,7 @@
             scm_type: git
             scm_url: "{{ tower_webhook_payload.repository.clone_url }}"
             scm_branch: "{{ git_branch_name }}"
-            scm_credential: "Pipeline - Gitea token"
+            scm_credential: "Pipeline - Gitea developer"
             validate_certs: false
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
