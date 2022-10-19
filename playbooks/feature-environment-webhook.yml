@@ -7,6 +7,7 @@
       ansible.builtin.debug:
         var: tower_webhook_payload
 
+
     - name: Collect required variables from tower webhook payload
       ansible.builtin.set_fact:
         # yamllint disable rule:line-length
@@ -30,7 +31,7 @@
             description: "Test environment for feature branch {{ git_branch_name }}"
             organization: "Pipeline"
             scm_type: git
-            scm_url: "{{ tower_webhook_payload.repository.git_http_url }}"
+            scm_url: "{{ tower_webhook_payload.repository.repository.clone_url }}"
             scm_branch: "{{ git_branch_name }}"
             scm_credential: "linux_gitlab_tower-linux-org"
             validate_certs: false
