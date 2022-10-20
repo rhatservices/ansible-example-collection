@@ -13,20 +13,23 @@
           - "Event type: {{tower_webhook_event_type}}"
           - "Event ref: {{tower_webhook_event_ref}}"
 
-    # - name: Collect required variables from tower webhook payload
-    #   ansible.builtin.set_fact:
-    #     # yamllint disable rule:line-length
-    #     git_branch_name: "{{ tower_webhook_event_ref | regex_search('feature\\/.*') }}"
-    #     git_branch_create_event: "{{ tower_webhook_payload.before is regex('^0+$') }}"
-    #     git_branch_delete_event: "{{ tower_webhook_payload.after is regex('^0+$') }}"
-    #     # yamllint enable rule:line-length
+    - name: Collect required variables from tower webhook payload
+      ansible.builtin.set_fact:
+        # The branch name might also be in the event ref BUT Gitea
+        # does NOT set the event ref for delete events.
+        #
+        # We need the ref for DELETE events because it is part of the
+        # project/job template name.
+        #
+        # yamllint disable rule:line-length
+        feature_branch_name: "{{ tower_webhook_payload.ref }}"
 
-    # - name: Print collected variables for verification
-    #   ansible.builtin.debug:
-    #     msg:
-    #       - "Git branch name: {{ git_branch_name }}"
-    #       - "Branch create event: {{ git_branch_create_event }}"
-    #       - "Branch delete event: {{ git_branch_delete_event }}"
+    - name: Print collected variables for verification
+      ansible.builtin.debug:
+        msg:
+          - "Git branch name: {{ git_branch_name }}"
+          - "Branch create event: {{ git_branch_create_event }}"
+          - "Branch delete event: {{ git_branch_delete_event }}"
 
     - name: Create a new feature branch environment
       block:
@@ -70,14 +73,14 @@
 
     - name: Delete feature branch environment
       block:
-        - name: Delete job template for feature branch {{ tower_webhook_event_ref }}
+        - name: Delete job template for feature branch {{ feature_branch_name }}
           # no_log: true
           ansible.controller.job_template:
             # yamllint disable-line rule:line-length
-            name: "Pipeline - SOE - Feature branch {{ tower_webhook_event_ref }}"
-            description: "Job template for feature branch {{ tower_webhook_event_ref }}"
+            name: "Pipeline - SOE - Feature branch {{ feature_branch_name }}"
+            description: "Job template for feature branch {{ feature_branch_name }}"
             job_type: "run"
-            project: "Pipeline - SOE - Project for feature branch {{ tower_webhook_event_ref }}"
+            project: "Pipeline - SOE - Project for feature branch {{ feature_branch_name }}"
             playbook: "playbooks/linux-soe.yml"
             organization: "Pipeline"
             state: absent
@@ -85,15 +88,15 @@
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
 
-        - name: Delete project for the feature branch {{ tower_webhook_event_ref }}
+        - name: Delete project for the feature branch {{ feature_branch_name }}
           ansible.controller.project:
-            name: "Pipeline - SOE - Feature branch {{ tower_webhook_event_ref }}"
+            name: "Pipeline - SOE - Feature branch {{ feature_branch_name }}"
             # yamllint disable-line rule:line-length
-            description: "Project for feature branch {{ tower_webhook_event_ref }}"
+            description: "Project for feature branch {{ feature_branch_name }}"
             organization: "Pipeline"
             scm_type: git
             scm_url: "{{ tower_webhook_payload.repository.clone_url }}"
-            scm_branch: "{{ tower_webhook_event_ref }}"
+            scm_branch: "{{ feature_branch_name }}"
             state: absent
             validate_certs: false
             controller_host: "{{ controller_url }}"
