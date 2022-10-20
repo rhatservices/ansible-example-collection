@@ -8,7 +8,7 @@
         var: tower_webhook_payload
 
     - name: Print webhook event type and ref
-      ansible.builting.debug:
+      ansible.builtin.debug:
         msg:
           - "Event type: {{tower_webhook_event_type}}"
           - "Event ref: {{tower_webhook_event_ref}}"
