@@ -52,7 +52,7 @@
             description: "Job template for feature branch {{ tower_webhook_event_ref }}"
             inventory: "Demo Inventory"
             job_type: "run"
-            project: "Pipeline - SOE - project for feature branch {{ tower_webhook_event_ref }}"
+            project: "Pipeline - SOE - Project for feature branch {{ tower_webhook_event_ref }}"
             playbook: "playbooks/linux-soe.yml"
             ask_job_type_on_launch: "yes"
             ask_verbosity_on_launch: "yes"
