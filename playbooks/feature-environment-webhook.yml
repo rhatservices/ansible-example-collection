@@ -32,7 +32,7 @@
       block:
         - name: Create a project for the feature branch {{ tower_webhook_event_ref }}
           ansible.controller.project:
-            name: "Pipeline - SOE - Project for feature branch {{ git_branch_name }}"
+            name: "Pipeline - SOE - Project for feature branch {{ tower_webhook_event_ref }}"
             # yamllint disable-line rule:line-length
             description: "Test environment for feature branch {{ tower_webhook_event_ref }}"
             organization: "Pipeline"
@@ -44,7 +44,7 @@
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
 
-        - name: Create job template for feature branch {{ git_branch_name }}
+        - name: Create job template for feature branch {{ tower_webhook_event_ref }}
           ansible.controller.job_template:
             organization: "Pipeline"
             # yamllint disable-line rule:line-length
