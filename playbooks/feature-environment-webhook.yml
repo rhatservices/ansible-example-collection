@@ -32,9 +32,9 @@
       block:
         - name: Create a project for the feature branch {{ tower_webhook_event_ref }}
           ansible.controller.project:
-            name: "Pipeline - SOE - Project for feature branch {{ tower_webhook_event_ref }}"
+            name: "Pipeline - SOE - Feature branch {{ tower_webhook_event_ref }}"
             # yamllint disable-line rule:line-length
-            description: "Test environment for feature branch {{ tower_webhook_event_ref }}"
+            description: "Project for feature branch {{ tower_webhook_event_ref }}"
             organization: "Pipeline"
             scm_type: git
             scm_url: "{{ tower_webhook_payload.repository.clone_url }}"
@@ -48,11 +48,11 @@
           ansible.controller.job_template:
             organization: "Pipeline"
             # yamllint disable-line rule:line-length
-            name: "Pipeline - SOE - Job template for feature branch {{ tower_webhook_event_ref }}"
+            name: "Pipeline - SOE - Feature branch {{ tower_webhook_event_ref }}"
             description: "Job template for feature branch {{ tower_webhook_event_ref }}"
             inventory: "Demo Inventory"
             job_type: "run"
-            project: "Pipeline - SOE - Project for feature branch {{ tower_webhook_event_ref }}"
+            project: "Pipeline - SOE - Feature branch {{ tower_webhook_event_ref }}"
             playbook: "playbooks/linux-soe.yml"
             ask_job_type_on_launch: "yes"
             ask_verbosity_on_launch: "yes"
@@ -73,13 +73,13 @@
         - name: Delete job template for feature branch {{ tower_webhook_event_ref }}
           # no_log: true
           ansible.controller.job_template:
-            organization: "Pipeline"
             # yamllint disable-line rule:line-length
-            name: "Pipeline - SOE - Job template for feature branch {{ tower_webhook_event_ref }}"
+            name: "Pipeline - SOE - Feature branch {{ tower_webhook_event_ref }}"
             description: "Job template for feature branch {{ tower_webhook_event_ref }}"
             job_type: "run"
             project: "Pipeline - SOE - Project for feature branch {{ tower_webhook_event_ref }}"
             playbook: "playbooks/linux-soe.yml"
+            organization: "Pipeline"
             state: absent
             validate_certs: false
             controller_host: "{{ controller_url }}"
@@ -87,9 +87,9 @@
 
         - name: Delete project for the feature branch {{ tower_webhook_event_ref }}
           ansible.controller.project:
-            name: "Pipeline - SOE - Project for feature branch {{ tower_webhook_event_ref }}"
+            name: "Pipeline - SOE - Feature branch {{ tower_webhook_event_ref }}"
             # yamllint disable-line rule:line-length
-            description: "Test environment for feature branch {{ tower_webhook_event_ref }}"
+            description: "Project for feature branch {{ tower_webhook_event_ref }}"
             organization: "Pipeline"
             scm_type: git
             scm_url: "{{ tower_webhook_payload.repository.clone_url }}"
