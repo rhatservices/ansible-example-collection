@@ -27,9 +27,7 @@
     - name: Print collected variables for verification
       ansible.builtin.debug:
         msg:
-          - "Git branch name: {{ git_branch_name }}"
-          - "Branch create event: {{ git_branch_create_event }}"
-          - "Branch delete event: {{ git_branch_delete_event }}"
+          - "Feature branch name: {{ feature_branch_name }}"
 
     - name: Create a new feature branch environment
       block:
