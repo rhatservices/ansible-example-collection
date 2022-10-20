@@ -5,38 +5,40 @@
   tasks:
     - name: Print tower_webhook_payload var
       ansible.builtin.debug:
+        var: tower_webhook_payload
+
+    - name: Print webhook event type and ref
+      ansible.builting.debug:
         msg:
-          - "Payload: {{tower_webhook_payload}}"
           - "Event type: {{tower_webhook_event_type}}"
           - "Event ref: {{tower_webhook_event_ref}}"
 
+    # - name: Collect required variables from tower webhook payload
+    #   ansible.builtin.set_fact:
+    #     # yamllint disable rule:line-length
+    #     git_branch_name: "{{ tower_webhook_event_ref | regex_search('feature\\/.*') }}"
+    #     git_branch_create_event: "{{ tower_webhook_payload.before is regex('^0+$') }}"
+    #     git_branch_delete_event: "{{ tower_webhook_payload.after is regex('^0+$') }}"
+    #     # yamllint enable rule:line-length
 
-    - name: Collect required variables from tower webhook payload
-      ansible.builtin.set_fact:
-        # yamllint disable rule:line-length
-        git_branch_name: "{{ tower_webhook_payload.ref | regex_search('feature\\/.*') }}"
-        git_branch_create_event: "{{ tower_webhook_payload.before is regex('^0+$') }}"
-        git_branch_delete_event: "{{ tower_webhook_payload.after is regex('^0+$') }}"
-        # yamllint enable rule:line-length
-
-    - name: Print collected variables for verification
-      ansible.builtin.debug:
-        msg:
-          - "Git branch name: {{ git_branch_name }}"
-          - "Branch create event: {{ git_branch_create_event }}"
-          - "Branch delete event: {{ git_branch_delete_event }}"
+    # - name: Print collected variables for verification
+    #   ansible.builtin.debug:
+    #     msg:
+    #       - "Git branch name: {{ git_branch_name }}"
+    #       - "Branch create event: {{ git_branch_create_event }}"
+    #       - "Branch delete event: {{ git_branch_delete_event }}"
 
     - name: Create a new feature branch environment
       block:
-        - name: Create a project for the feature branch {{ git_branch_name }}
+        - name: Create a project for the feature branch {{ tower_webhook_event_ref }}
           ansible.controller.project:
             name: "Pipeline - SOE - Project for feature branch {{ git_branch_name }}"
             # yamllint disable-line rule:line-length
-            description: "Test environment for feature branch {{ git_branch_name }}"
+            description: "Test environment for feature branch {{ tower_webhook_event_ref }}"
             organization: "Pipeline"
             scm_type: git
             scm_url: "{{ tower_webhook_payload.repository.clone_url }}"
-            scm_branch: "{{ git_branch_name }}"
+            scm_branch: "{{ tower_webhook_event_ref }}"
             scm_credential: "Pipeline - Gitea developer"
             validate_certs: false
             controller_host: "{{ controller_url }}"
@@ -46,11 +48,11 @@
           ansible.controller.job_template:
             organization: "Pipeline"
             # yamllint disable-line rule:line-length
-            name: "Pipeline - SOE - Job template for feature branch {{ git_branch_name }}"
-            description: "Job template for feature branch {{ git_branch_name }}"
+            name: "Pipeline - SOE - Job template for feature branch {{ tower_webhook_event_ref }}"
+            description: "Job template for feature branch {{ tower_webhook_event_ref }}"
             inventory: "Demo Inventory"
             job_type: "run"
-            project: "Pipeline - SOE - project for feature branch {{ git_branch_name }}"
+            project: "Pipeline - SOE - project for feature branch {{ tower_webhook_event_ref }}"
             playbook: "playbooks/linux-soe.yml"
             ask_job_type_on_launch: "yes"
             ask_verbosity_on_launch: "yes"
@@ -64,38 +66,38 @@
             controller_oauthtoken: "{{ controller_oauthtoken }}"
 
       when:
-        - git_branch_create_event | bool
+        - tower_webhook_event_type == "create"
 
     - name: Delete feature branch environment
       block:
-        - name: Delete job template for feature branch {{ git_branch_name }}
+        - name: Delete job template for feature branch {{ tower_webhook_event_ref }}
           # no_log: true
           ansible.controller.job_template:
             organization: "Pipeline"
             # yamllint disable-line rule:line-length
-            name: "Pipeline - SOE - Job template for feature branch {{ git_branch_name }}"
-            description: "Job template for feature branch {{ git_branch_name }}"
+            name: "Pipeline - SOE - Job template for feature branch {{ tower_webhook_event_ref }}"
+            description: "Job template for feature branch {{ tower_webhook_event_ref }}"
             job_type: "run"
-            project: "Pipeline - SOE - Project for feature branch {{ git_branch_name }}"
+            project: "Pipeline - SOE - Project for feature branch {{ tower_webhook_event_ref }}"
             playbook: "playbooks/linux-soe.yml"
             state: absent
             validate_certs: false
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
 
-        - name: Delete project for the feature branch {{ git_branch_name }}
+        - name: Delete project for the feature branch {{ tower_webhook_event_ref }}
           ansible.controller.project:
-            name: "Pipeline - SOE - Project for feature branch {{ git_branch_name }}"
+            name: "Pipeline - SOE - Project for feature branch {{ tower_webhook_event_ref }}"
             # yamllint disable-line rule:line-length
-            description: "Test environment for feature branch {{ git_branch_name }}"
+            description: "Test environment for feature branch {{ tower_webhook_event_ref }}"
             organization: "Pipeline"
             scm_type: git
             scm_url: "{{ tower_webhook_payload.repository.clone_url }}"
-            scm_branch: "{{ git_branch_name }}"
+            scm_branch: "{{ tower_webhook_event_ref }}"
             state: absent
             validate_certs: false
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
 
       when:
-        - git_branch_delete_event | bool
+        - tower_webhook_event_type == "delete"
