@@ -41,6 +41,7 @@
             scm_url: "{{ tower_webhook_payload.repository.clone_url }}"
             scm_branch: "{{ tower_webhook_event_ref }}"
             scm_credential: "Pipeline - Gitea developer"
+            scm_update_on_launch: yes
             validate_certs: false
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
