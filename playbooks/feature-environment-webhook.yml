@@ -5,7 +5,10 @@
   tasks:
     - name: Print tower_webhook_payload var
       ansible.builtin.debug:
-        var: tower_webhook_payload
+        msg:
+          - "Payload: {{tower_webhook_payload}}"
+          - "Event type: {{tower_webhook_event_type}}"
+          - "Event ref: {{tower_webhook_event_ref}}"
 
 
     - name: Collect required variables from tower webhook payload
