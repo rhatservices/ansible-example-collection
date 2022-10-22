@@ -1,0 +1,4 @@
+collections:
+  - name: ansible.controller
+    version: 4.2.1
+    source: https://console.redhat.com/api/automation-hub/
