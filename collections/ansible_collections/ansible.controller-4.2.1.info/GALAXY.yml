@@ -1,0 +1,8 @@
+download_url: https://console.redhat.com/api/automation-hub/v3/plugin/ansible/content/published/collections/artifacts/ansible-controller-4.2.1.tar.gz
+format_version: 1.0.0
+name: controller
+namespace: ansible
+server: https://console.redhat.com/api/automation-hub/
+signatures: []
+version: 4.2.1
+version_url: /api/automation-hub/v3/plugin/ansible/content/published/collections/index/ansible/controller/versions/4.2.1/
