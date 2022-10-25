@@ -55,7 +55,7 @@
             inventory: "Demo Inventory"
             job_type: "run"
             project: "Pipeline - SOE - Feature branch {{ tower_webhook_event_ref }}"
-            playbook: "playbooks/linux-soe.yml"
+            playbook: "linux-soe.yml"
             ask_job_type_on_launch: "yes"
             ask_verbosity_on_launch: "yes"
             ask_inventory_on_launch: "yes"
@@ -80,7 +80,7 @@
             description: "Job template for feature branch {{ feature_branch_name }}"
             job_type: "run"
             project: "Pipeline - SOE - Project for feature branch {{ feature_branch_name }}"
-            playbook: "playbooks/linux-soe.yml"
+            playbook: "linux-soe.yml"
             organization: "Pipeline"
             state: absent
             validate_certs: false
