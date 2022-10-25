@@ -3,4 +3,4 @@
   tasks:
     - name: Apply SOE configuration to linux hosts
       ansible.builtin.debug:
-        msg: "This applies our SOE configuration to all linux hosts (fancy feature)"
+        msg: "This applies our SOE configuration to all linux hosts."
