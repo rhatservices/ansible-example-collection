@@ -1,0 +1,11 @@
+- name: Onboard a new team to Ansible Tower
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create new organization
+
+    - name: Create new admin user
+
+    - name: Add project for automating Controller configuration
+
+    - name: Add job template applying Organization configuration
