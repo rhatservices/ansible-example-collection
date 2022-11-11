@@ -1,6 +1,6 @@
 - name: Onboard a new team to Ansible Tower
   hosts: localhost
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Create new organization
 
