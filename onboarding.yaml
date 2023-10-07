@@ -1,8 +1,11 @@
+---
 - name: Onboard a new team to Ansible Tower
   hosts: localhost
   gather_facts: false
   tasks:
     - name: Create new organization
+      ansible.builtin.debug:
+        msg: "Creating new organization"
 
     - name: Create new admin user
 

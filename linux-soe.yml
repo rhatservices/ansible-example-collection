@@ -6,5 +6,5 @@
       ansible.builtin.debug:
         msg: "This applies our SOE configuration to all linux hosts (demo)."
 
-    - ansible.builtin.debug:
-        msg: "linter error"
+    - debug:
+        msg: "linter error 2"
