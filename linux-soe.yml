@@ -1,5 +1,6 @@
+---
 - name: Apply standard configuration to all linux hosts
-  hosts: '{{target|default("all")}}'
+  hosts: '{{ target|default("all") }}'
   tasks:
     - name: Apply SOE configuration to linux hosts
       ansible.builtin.debug:
