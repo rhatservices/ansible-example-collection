@@ -10,8 +10,8 @@
     - name: Print webhook event type and ref
       ansible.builtin.debug:
         msg:
-          - "Event type: {{tower_webhook_event_type}}"
-          - "Event ref: {{tower_webhook_event_ref}}"
+          - "Event type: {{ tower_webhook_event_type }}"
+          - "Event ref: {{ tower_webhook_event_ref }}"
 
     - name: Collect required variables from tower webhook payload
       ansible.builtin.set_fact:
@@ -30,6 +30,7 @@
           - "Feature branch name: {{ feature_branch_name }}"
 
     - name: Create a new feature branch environment
+      when: tower_webhook_event_type == "create"
       block:
         - name: Create a project for the feature branch {{ tower_webhook_event_ref }}
           ansible.controller.project:
@@ -67,10 +68,9 @@
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
 
-      when:
-        - tower_webhook_event_type == "create"
 
     - name: Delete feature branch environment
+      when: tower_webhook_event_type == "delete"
       block:
         - name: Delete job template for feature branch {{ feature_branch_name }}
           # no_log: true
@@ -100,6 +100,3 @@
             validate_certs: false
             controller_host: "{{ controller_url }}"
             controller_oauthtoken: "{{ controller_oauthtoken }}"
-
-      when:
-        - tower_webhook_event_type == "delete"
