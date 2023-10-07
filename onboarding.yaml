@@ -8,7 +8,13 @@
         msg: "Creating new organization"
 
     - name: Create new admin user
+      ansible.builtin.debug:
+        msg: "Creating new admin user"
 
     - name: Add project for automating Controller configuration
+      ansible.builtin.debug:
+        msg: "Creating new project for controller configuration"
 
     - name: Add job template applying Organization configuration
+      ansible.builtin.debug:
+        msg: "Creating new job template for Organization configuration"
